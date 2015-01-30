@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   root 'static_pages#home'
 
-  get    'login'   => 'sessions#new'
-  post   'login'   => 'sessions#create'
-  delete 'logout'  => 'sessions#destroy'
+  get    'signin'   => 'sessions#new'
+  post   'signin'   => 'sessions#create'
+  delete 'signout'  => 'sessions#destroy'
 
   get 'signup'	=> 'users#new'
 
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :entries,          only: [:create, :destroy]
   resources :follows,       only: [:create, :destroy] 
-  resources :comments,          only: [:create, :destroy]
+  resources :comments, only: [:create, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

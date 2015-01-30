@@ -1,2 +1,49 @@
-<h1>Entries#_entry</h1>
-<p>Find me in app/views/entries/_entry.html.erb</p>
+<li id="entry-<%= entry.id %>">
+  <%= link_to gravatar_for(entry.user, size: 50), entry.user %>
+  <span class="user"><%= link_to entry.user.name, entry.user %></span>
+  <span class="title">
+    <%= entry.title %>
+  </span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(entry.created_at) %> ago.
+    <% if current_user?(entry.user) %>
+      <%= link_to "delete", entry, method: :delete,
+                                       data: { confirm: "You sure?" } %>
+    <% end %>
+  </span>
+  <span class="content">
+    <%= entry.content %>
+  </span>
+<span class="comment">
+	<div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading<%= entry.id %>">
+	      <h4 class="panel-title">
+		<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= entry.id %>" aria-expanded="true" aria-controls="collapse<%= entry.id %>">
+		  Comment
+		</a>
+	      </h4>
+	    </div>
+	    <div id="collapse<%= entry.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%= entry.id %>">
+	      <div class="panel-body">
+					<div>
+          <% if entry.comments(entry.id).any? %>
+            <ol class="comments">
+              <%= render entry.comments(entry.id) %>
+            </ol>
+          <% end %>
+          </div>
+          <div>
+ 							<% if logged_in? %>
+                <%= form_for(@comment, html: { multipart: true }) do |f| %>
+                  <%= f.text_field :content, placeholder: "Comment..." %>
+                  <%= f.hidden_field :entry_id, :value => entry.id %>
+                  <%= f.submit "Comment", class: "btn btn-primary" %>
+                <% end %>
+              <% end %>
+          </div>
+	      </div>
+	    </div>
+	  </div>
+</span>
+</li>
+
